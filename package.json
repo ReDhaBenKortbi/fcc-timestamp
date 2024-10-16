@@ -1,6 +1,6 @@
 {
   "name": "fcc-api-projects-boilerplate",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.1-rc.2",
   "description": "An FCC Backend Challenge",
   "main": "index.js",
   "scripts": {
