@@ -36,28 +36,30 @@ app.get("/api/:date?", (req, res) => {
   const {date} = req.params;
   //if no date params found
   if(!date) {
-    response.unix = new Date().getTime();
-    response.utc = new Date().toUTCString();
-    res.json(response)
+    const date = new Date();
+    response.unix = +date.getTime();
+    response.utc = date.toUTCString();
+    return res.json(response)
   }
   //if there's a date param
   if (!isNaN(date)) { //if it is a number
-      response.unix = date
+      if(new Date(+date).toString() === "Invalid Date") {
+        return res.json({error: "Invalid Date"})
+      }
+      response.unix = +date
       response.utc = new Date(+date).toUTCString();
-      res.json(response)
+      return  res.json(response)
   }else { //if it is a string
       isValidDate = new Date(date).toString(); //check if this string is valid
       if(isValidDate === "Invalid Date") { // if it is not valid 
-        res.json({error: "Invalid Date"})
+        return res.json({error: "Invalid Date"})
       }else {
-  // in case it's valid 
-      response.unix = new Date(date).getTime();
+      // in case it's valid 
+      response.unix = +new Date(date).getTime();
       response.utc = new Date(date).toUTCString();
-      res.json(response)
-      }
-    
+      return res.json(response)
     }
-})
+}})
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
